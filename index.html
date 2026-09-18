@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Marlowe Studio — Interior Design</title>
+<meta name="description" content="Marlowe Studio is a London interior design practice creating considered, light-filled homes for modern living." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="preloader__mark">Marlowe<span>Studio</span></div>
+  <div class="preloader__bar"><div class="preloader__bar-fill" id="preloaderFill"></div></div>
+</div>
+
+<div class="progress-rail"><div class="progress-rail__fill" id="scrollFill"></div></div>
+
+<header class="nav" id="siteNav">
+  <a href="#top" class="nav__mark">Marlowe<span>Studio</span></a>
+  <nav class="nav__links">
+    <a href="#philosophy">Philosophy</a>
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="#contact" class="nav__cta">Enquire</a>
+  </nav>
+  <button class="nav__burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#philosophy">Philosophy</a>
+  <a href="#services">Services</a>
+  <a href="#work">Work</a>
+  <a href="#process">Process</a>
+  <a href="#contact">Enquire</a>
+</div>
+
+<main id="top">
+
+  <div class="hero-track" id="heroTrack">
+    <section class="hero" id="hero">
+      <img class="hero__poster" src="assets/img/hero-poster.jpg" alt="" aria-hidden="true" />
+      <video class="hero__video" id="heroVideo" poster="assets/img/hero-poster.jpg" autoplay muted loop playsinline preload="auto">
+        <source src="assets/video/hero.mp4" type="video/mp4" />
+      </video>
+      <div class="hero__scrim"></div>
+      <div class="hero__content" id="heroContent">
+        <p class="eyebrow reveal">Interior design, London</p>
+        <h1 class="hero__title reveal">
+          Quiet rooms,<br />considered <em>completely</em>.
+        </h1>
+        <p class="hero__lede reveal">
+          Marlowe Studio designs calm, light-filled interiors for people who
+          want their homes to feel finished, not decorated.
+        </p>
+        <div class="hero__actions reveal">
+          <a href="#work" class="btn btn--primary">View our work</a>
+          <a href="#contact" class="btn btn--ghost">Start a project</a>
+        </div>
+      </div>
+      <a class="hero__scroll" id="heroScrollCue" href="#philosophy" aria-label="Scroll to content">
+        <span></span> Scroll
+      </a>
+    </section>
+  </div>
+
+  <section class="section philosophy" id="philosophy">
+    <span class="parallax-num" aria-hidden="true">01</span>
+    <div class="section__inner grid-2">
+      <div class="reveal">
+        <p class="eyebrow">Philosophy</p>
+        <h2>Fewer decisions,<br/>better ones.</h2>
+      </div>
+      <div class="reveal reveal--delay">
+        <p class="lede">
+          Good interiors are not built from more — more colour, more pattern,
+          more furniture. They come from restraint: the right proportions,
+          honest materials, and light left to do most of the work.
+        </p>
+        <p>
+          We design every room as one continuous idea, from the joinery to
+          the door handles, so a home reads as a single, quiet thought
+          rather than a collection of choices.
+        </p>
+        <a href="#services" class="text-link">How we work →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section stats">
+    <div class="stats__lines" aria-hidden="true"></div>
+    <div class="section__inner stats__grid">
+      <div class="stat reveal"><span class="stat__num">14</span><span class="stat__label">Years in practice</span></div>
+      <div class="stat reveal reveal--delay-1"><span class="stat__num">120+</span><span class="stat__label">Homes completed</span></div>
+      <div class="stat reveal reveal--delay-2"><span class="stat__num">6</span><span class="stat__label">Design awards</span></div>
+      <div class="stat reveal reveal--delay-3"><span class="stat__num">100%</span><span class="stat__label">Bespoke, always</span></div>
+    </div>
+  </section>
+
+  <section class="section services" id="services">
+    <div class="section__inner">
+      <p class="eyebrow reveal">Services</p>
+      <h2 class="reveal">One studio, start to finish.</h2>
+
+      <div class="services__list">
+        <article class="service reveal">
+          <span class="service__index">01</span>
+          <h3>Interior Architecture</h3>
+          <p>Spatial planning, structural layout and joinery detailing that
+            reshapes how a home is used before a single finish is chosen.</p>
+        </article>
+        <article class="service reveal reveal--delay-1">
+          <span class="service__index">02</span>
+          <h3>Interior Design</h3>
+          <p>Material palettes, furniture, lighting and styling, curated as
+            one considered scheme rather than a room-by-room patchwork.</p>
+        </article>
+        <article class="service reveal reveal--delay-2">
+          <span class="service__index">03</span>
+          <h3>Bespoke Furniture</h3>
+          <p>Joinery and furniture designed and made to measure, where a
+            standard piece would compromise the proportions of a room.</p>
+        </article>
+        <article class="service reveal reveal--delay-3">
+          <span class="service__index">04</span>
+          <h3>Project Management</h3>
+          <p>A single point of contact through contractors, suppliers and
+            site, so the finished home matches the drawing, not a version of it.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section work" id="work">
+    <div class="section__inner">
+      <p class="eyebrow reveal">Selected work</p>
+      <h2 class="reveal">Recent projects.</h2>
+    </div>
+
+    <div class="project-track" data-project>
+      <div class="project-stage">
+        <img class="project-poster" src="assets/img/hero-poster.jpg" alt="" aria-hidden="true" />
+        <video class="project-video" poster="assets/img/hero-poster.jpg" autoplay muted loop playsinline preload="none">
+          <source src="assets/video/hero.mp4" type="video/mp4" />
+        </video>
+        <div class="project-scrim"></div>
+        <div class="project-copy">
+          <span class="project-num">01</span>
+          <h3 class="project-title">Bankside Apartment</h3>
+          <p class="project-meta">Full refurbishment · Southwark, London</p>
+          <p class="project-desc">An open-plan reconfiguration that unites kitchen, dining
+            and living around a single run of oak and stone — every surface chosen to age well.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-track" data-project>
+      <div class="project-stage">
+        <img class="project-poster" src="assets/img/project-1.jpg" alt="" aria-hidden="true" />
+        <video class="project-video" poster="assets/img/project-1.jpg" autoplay muted loop playsinline preload="none">
+          <source src="assets/video/project-1.mp4" type="video/mp4" />
+        </video>
+        <div class="project-scrim"></div>
+        <div class="project-copy">
+          <span class="project-num">02</span>
+          <h3 class="project-title">Highbury Townhouse</h3>
+          <p class="project-meta">Interior architecture · Islington</p>
+          <p class="project-desc">A Victorian townhouse reworked from the roof down —
+            new sightlines between floors, and joinery that hides a full re-plan of services.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-track" data-project>
+      <div class="project-stage">
+        <img class="project-poster" src="assets/img/project-2.jpg" alt="" aria-hidden="true" />
+        <video class="project-video" poster="assets/img/project-2.jpg" autoplay muted loop playsinline preload="none">
+          <source src="assets/video/project-2.mp4" type="video/mp4" />
+        </video>
+        <div class="project-scrim"></div>
+        <div class="project-copy">
+          <span class="project-num">03</span>
+          <h3 class="project-title">Chiswick Mews House</h3>
+          <p class="project-meta">Full interior design · Chiswick</p>
+          <p class="project-desc">A restrained material palette — lime plaster, waxed oak,
+            unlacquered brass — chosen to develop a patina rather than resist one.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-track" data-project>
+      <div class="project-stage">
+        <img class="project-poster" src="assets/img/project-3.jpg" alt="" aria-hidden="true" />
+        <video class="project-video" poster="assets/img/project-3.jpg" autoplay muted loop playsinline preload="none">
+          <source src="assets/video/project-3.mp4" type="video/mp4" />
+        </video>
+        <div class="project-scrim"></div>
+        <div class="project-copy">
+          <span class="project-num">04</span>
+          <h3 class="project-title">Notting Hill Flat</h3>
+          <p class="project-meta">Furniture &amp; styling · Notting Hill</p>
+          <p class="project-desc">A compact flat furnished entirely bespoke, built to make
+            the most of an awkward footprint without it ever reading as a compromise.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section__inner">
+      <a href="#contact" class="text-link reveal">Enquire about a project →</a>
+    </div>
+  </section>
+
+  <section class="section process" id="process">
+    <span class="parallax-num" aria-hidden="true">04</span>
+    <div class="section__inner">
+      <p class="eyebrow reveal">Process</p>
+      <h2 class="reveal">How a project unfolds.</h2>
+
+      <ol class="timeline">
+        <li class="timeline__item reveal">
+          <span class="timeline__num">01</span>
+          <div>
+            <h3>Discovery</h3>
+            <p>We visit the space, listen to how you live, and set the brief
+              and budget before any design begins.</p>
+          </div>
+        </li>
+        <li class="timeline__item reveal reveal--delay-1">
+          <span class="timeline__num">02</span>
+          <div>
+            <h3>Concept</h3>
+            <p>Spatial layouts, material direction and a considered scheme,
+              presented as one coherent idea for the whole home.</p>
+          </div>
+        </li>
+        <li class="timeline__item reveal reveal--delay-2">
+          <span class="timeline__num">03</span>
+          <div>
+            <h3>Detail &amp; specification</h3>
+            <p>Every finish, fitting and piece of furniture drawn, sourced
+              and specified down to the last handle.</p>
+          </div>
+        </li>
+        <li class="timeline__item reveal reveal--delay-3">
+          <span class="timeline__num">04</span>
+          <div>
+            <h3>Delivery</h3>
+            <p>We manage contractors and installation on site, so the home
+              you receive matches the one we designed.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section quote">
+    <div class="section__inner">
+      <blockquote class="reveal">
+        <p>“Marlowe Studio gave us a home that feels finished in a way we
+          couldn't have described, only recognised once we saw it.”</p>
+        <cite>— Private client, Bankside Apartment</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="section cta" id="contact">
+    <div class="section__inner cta__inner">
+      <p class="eyebrow reveal">Start a project</p>
+      <h2 class="reveal">Let's talk about your home.</h2>
+      <p class="lede reveal reveal--delay">
+        Tell us a little about the project and we'll arrange an initial
+        conversation, in person or over a call.
+      </p>
+      <a class="btn btn--primary reveal reveal--delay-1" href="mailto:studio@marlowe-interiors.co.uk">
+        studio@marlowe-interiors.co.uk
+      </a>
+      <p class="cta__phone reveal reveal--delay-2">+44 (0)20 7946 0891</p>
+    </div>
+  </section>
+
+</main>
+
+<a href="#top" class="to-top" id="toTop" aria-label="Back to top">
+  <span aria-hidden="true">↑</span>
+</a>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <a href="#top" class="nav__mark">Marlowe<span>Studio</span></a>
+    <p>Marlowe Studio Ltd · London, United Kingdom</p>
+    <nav class="footer__links">
+      <a href="#philosophy">Philosophy</a>
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Enquire</a>
+    </nav>
+    <p class="footer__legal">© 2026 Marlowe Studio. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>
