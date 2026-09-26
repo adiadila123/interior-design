@@ -15,8 +15,6 @@
   var heroScrollCue = document.getElementById('heroScrollCue');
 
   var reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var mobileQuery = window.matchMedia('(max-width: 860px)');
-  var pointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
 
   var lenis = null;
 
@@ -122,15 +120,28 @@
       var barTween = gsap.to(preloaderFill, { width: '88%', duration: 1.4, ease: 'power1.out' });
 
       var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
-      var videoReady = new Promise(function (res) {
-        if (!heroVideo || heroVideo.readyState >= 1) { res(); return; }
-        heroVideo.addEventListener('loadedmetadata', res, { once: true });
-        setTimeout(res, 2200); // never block on a stalled video fetch
-      });
-      var minDelay = new Promise(function (res) { setTimeout(res, 550); });
-      var hardTimeout = new Promise(function (res) { setTimeout(res, 2400); });
 
-      Promise.race([Promise.all([fontsReady, videoReady, minDelay]), hardTimeout]).then(function () {
+      // No image on the page uses loading="lazy", so window's 'load' event
+      // genuinely waits for every image (plus CSS) to finish fetching.
+      var pageReady = new Promise(function (res) {
+        if (document.readyState === 'complete') { res(); return; }
+        window.addEventListener('load', res, { once: true });
+      });
+
+      // HAVE_ENOUGH_DATA (4): the hero video can play through without
+      // stalling, not just that its dimensions are known.
+      var videoReady = new Promise(function (res) {
+        if (!heroVideo || heroVideo.readyState >= 4) { res(); return; }
+        heroVideo.addEventListener('canplaythrough', res, { once: true });
+        heroVideo.addEventListener('error', res, { once: true });
+      });
+
+      var minDelay = new Promise(function (res) { setTimeout(res, 550); });
+      // Safety net only: if a resource genuinely stalls (dropped connection,
+      // dead asset), don't leave the site inaccessible forever.
+      var hardTimeout = new Promise(function (res) { setTimeout(res, 8000); });
+
+      Promise.race([Promise.all([fontsReady, pageReady, videoReady, minDelay]), hardTimeout]).then(function () {
         barTween.kill();
         gsap.timeline({
           onComplete: function () {
@@ -170,9 +181,13 @@
   // pinned via sticky inside it, and GSAP driving the video's own
   // currentTime from scroll position — the film literally IS the scrollbar.
   //
-  // Gated on a fine pointer: iOS/touch browsers block currentTime seeks
-  // outside a user gesture, so scrubbing would just freeze the frame there.
-  // Touch/mobile/reduced-motion keep the ambient autoplay loop (base CSS).
+  // Runs on touch too: a muted <video> is exempt from autoplay-gesture
+  // restrictions, but a video that has never played won't repaint on a
+  // programmatic currentTime seek on iOS/touch — armTimeline() below wakes
+  // the decoder with a silent play()+pause() before the scrub timeline
+  // starts driving currentTime. Reduced-motion still keeps the ambient
+  // autoplay loop (base CSS), since the whole cinematics setup is skipped
+  // for it upstream (see gsapAvailable).
   //
   // A <video src> streamed straight from an HTTP server only seeks reliably
   // if that server answers Range requests with 206 Partial Content; plenty
@@ -186,7 +201,6 @@
   // once — wasted bandwidth, and enough load on a single-threaded dev server
   // to stall one of the two requests entirely. Caching the blob promise per
   // URL means every track referencing the same file shares one fetch.
-  var scrubInstances = [];
   var blobCache = {};
   function loadAsBlob(url) {
     if (!blobCache[url]) {
@@ -233,6 +247,16 @@
           video.currentTime = 0;
           track.setAttribute('data-video-ready', '');
 
+          // Wake the decoder: a muted video is allowed to play() without a
+          // user gesture, and a video that has played at least once keeps
+          // repainting on later currentTime seeks even while paused.
+          var wake = video.play();
+          if (wake && typeof wake.then === 'function') {
+            wake.then(function () { video.pause(); video.currentTime = 0; }).catch(function () {});
+          } else {
+            video.pause();
+          }
+
           var tl = gsap.timeline({
             scrollTrigger: {
               trigger: track,
@@ -246,7 +270,7 @@
             onUpdate: function () { if (duration) video.currentTime = proxy.t * duration; },
           }, 0);
           if (opts.scrollCue) tl.to(opts.scrollCue, { opacity: 0, duration: 0.12, ease: 'none' }, 0);
-          if (opts.content) tl.to(opts.content, { opacity: 0, y: -36, duration: 0.28, ease: 'none' }, opts.contentFadeStart || 0.72);
+          if (opts.content) tl.to(opts.content, { opacity: 0, y: -36, duration: opts.contentFadeDuration || 0.28, ease: 'none' }, opts.contentFadeStart || 0.72);
           ScrollTrigger.refresh();
         }
 
@@ -272,20 +296,10 @@
       });
     }
 
-    function resync() {
-      var nowCapable = pointerQuery.matches && !mobileQuery.matches;
-      if (nowCapable && !active) activate();
-      else if (!nowCapable && active) { deactivate(); ScrollTrigger.refresh(); }
-    }
-
-    var instance = { activate: activate, resync: resync };
-    scrubInstances.push(instance);
-    return instance;
+    return { activate: activate };
   }
 
   function initScrubTracks() {
-    var capable = pointerQuery.matches && !mobileQuery.matches;
-
     // Every one of these <video autoplay> elements starts its OWN native
     // buffering connection the instant the page loads, regardless of when
     // (or whether) this script later activates scrubbing for it. With five
@@ -296,14 +310,12 @@
     // any blob fetch begins: clearing src + load() cancels in-flight
     // network activity for that element. Each video's own native poster
     // attribute keeps showing a frame in the meantime, so nothing blanks.
-    if (capable) {
-      document.querySelectorAll('#heroVideo, .project-video').forEach(function (v) {
-        v.removeAttribute('autoplay');
-        v.pause();
-        v.src = '';
-        v.load();
-      });
-    }
+    document.querySelectorAll('#heroVideo, .project-video').forEach(function (v) {
+      v.removeAttribute('autoplay');
+      v.pause();
+      v.src = '';
+      v.load();
+    });
 
     // The hero is always the first thing seen, so it loads immediately.
     var heroInstance = createScrubTrack(heroTrack, heroVideo, {
@@ -311,7 +323,7 @@
       scrollCue: heroScrollCue,
       contentFadeStart: 0.72,
     });
-    if (capable && heroInstance) heroInstance.activate();
+    if (heroInstance) heroInstance.activate();
 
     // Each project's video is 10-15MB. Fetching all four the instant the
     // page loads — on top of the hero's own fetch — means 5 concurrent
@@ -323,11 +335,11 @@
     document.querySelectorAll('.project-track').forEach(function (track) {
       var video = track.querySelector('.project-video');
       var content = track.querySelector('.project-copy');
-      var instance = createScrubTrack(track, video, { content: content, contentFadeStart: 0.7 });
+      var instance = createScrubTrack(track, video, { content: content, contentFadeStart: 0.86, contentFadeDuration: 0.12 });
       if (instance) lazy.push({ track: track, instance: instance });
     });
 
-    if (capable && lazy.length) {
+    if (lazy.length) {
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
@@ -341,15 +353,6 @@
         lazy.forEach(function (l) { l.instance.activate(); });
       }
     }
-
-    // Re-evaluate all tracks if the device/viewport capability genuinely
-    // changes (e.g. a hybrid laptop docking a mouse, or a resize past the
-    // mobile breakpoint). Tracks never lazily activated yet are untouched —
-    // resync() only acts on ones that already have an activate/deactivate
-    // history, which is fine: the IO above still owns their first activation.
-    function resyncAll() { scrubInstances.forEach(function (i) { i.resync(); }); }
-    pointerQuery.addEventListener('change', resyncAll);
-    mobileQuery.addEventListener('change', resyncAll);
   }
 
   // ================= decorative parallax layers =================
